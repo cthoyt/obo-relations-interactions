@@ -14,6 +14,7 @@ Ontology(
     AnnotationAssertion( rdfs:label obo:RO_0002400 "has direct input" )
     AnnotationAssertion( rdfs:label obo:IAO_0000118 "alternative term" )
     AnnotationAssertion( rdfs:label obo:RO_0002604 "opposite of" )
+    AnnotationAssertion( rdfs:label orcid:0000-0003-4423-4370 "Charles Tapley Hoyt" )
     AnnotationAssertion( rdfs:label obo:RO_0008002 "myristoylates" )
     AnnotationAssertion( rdfs:label obo:RO_0008001 "is myristoyltransferase activity" )
     AnnotationAssertion( rdfs:label obo:RO_0008004 "demyristoylates" )

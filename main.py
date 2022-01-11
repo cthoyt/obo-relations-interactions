@@ -58,6 +58,9 @@ def main():
             AnnotationAssertion(RDFS.label, has_direct_input, "has direct input"),
             AnnotationAssertion(RDFS.label, alternative_term, "alternative term"),
             AnnotationAssertion(RDFS.label, opposite_of, "opposite of"),
+            AnnotationAssertion(
+                RDFS.label, orcid["0000-0003-4423-4370"], "Charles Tapley Hoyt"
+            ),
         ]
     )
     for (
