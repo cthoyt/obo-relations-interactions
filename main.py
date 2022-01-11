@@ -119,6 +119,8 @@ def main():
                 # Everything is connected to everything, Brian
                 AnnotationAssertion(opposite_of, add_relation, remove_relation),
                 AnnotationAssertion(opposite_of, remove_relation, add_relation),
+                AnnotationAssertion(opposite_of, add_helper, remove_helper),
+                AnnotationAssertion(opposite_of, remove_helper, add_helper),
             ]
         )
         if group is not None:
