@@ -1,0 +1,42 @@
+Prefix( xml: = <http://www.w3.org/XML/1998/namespace> )
+Prefix( rdf: = <http://www.w3.org/1999/02/22-rdf-syntax-ns#> )
+Prefix( rdfs: = <http://www.w3.org/2000/01/rdf-schema#> )
+Prefix( xsd: = <http://www.w3.org/2001/XMLSchema#> )
+Prefix( owl: = <http://www.w3.org/2002/07/owl#> )
+Prefix( obo: = <http://purl.obolibrary.org/obo/> )
+Prefix( orcid: = <https://orcid.org/> )
+Prefix( dce: = <http://purl.org/dc/elements/1.1/> )
+
+Ontology(
+    AnnotationAssertion( rdfs:label obo:RO_0008002 "myristoylates" )
+    AnnotationAssertion( rdfs:label obo:RO_0008001 "is myristoyltransferase activity" )
+    AnnotationAssertion( rdfs:label obo:RO_0008004 "demyristoylates" )
+    AnnotationAssertion( rdfs:label obo:RO_0008003 "is demyristoyltransferase activity" )
+    AnnotationAssertion( dce:contributor obo:RO_0008001 orcid:0000-0003-4423-4370 )
+    AnnotationAssertion( dce:contributor obo:RO_0008002 orcid:0000-0003-4423-4370 )
+    AnnotationAssertion( dce:contributor obo:RO_0008003 orcid:0000-0003-4423-4370 )
+    AnnotationAssertion( dce:contributor obo:RO_0008004 orcid:0000-0003-4423-4370 )
+    AnnotationAssertion( obo:IAO_0000118 obo:RO_0008002 "An interaction relation between x and y in which x catalyzes a reaction in which a myristoyl group is added to y." )
+    AnnotationAssertion( obo:IAO_0000118 obo:RO_0008004 "An interaction relation between x and y in which x catalyzes a reaction in which a myristoyl group is removed from y." )
+    AnnotationAssertion( obo:RO_0002604 obo:RO_0008002 obo:RO_0008004 )
+    AnnotationAssertion( obo:RO_0002604 obo:RO_0008004 obo:RO_0008002 )
+    Declaration( ObjectProperty( obo:RO_0008001 ) )
+    Declaration( ObjectProperty( obo:RO_0008002 ) )
+    Declaration( ObjectProperty( obo:RO_0008003 ) )
+    Declaration( ObjectProperty( obo:RO_0008004 ) )
+    SubObjectPropertyOf( obo:RO_0008001 obo:RO_0002564 )
+    SubObjectPropertyOf( obo:RO_0008002 obo:RO_0002436 )
+    SubObjectPropertyOf( obo:RO_0008003 obo:RO_0002564 )
+    SubObjectPropertyOf( obo:RO_0008004 obo:RO_0002436 )
+    SubClassOf( obo:GO_0019107     ObjectHasSelf( obo:RO_0008001 ) )
+    SubObjectPropertyOf(     ObjectPropertyChain(
+        obo:RO_0002215
+        obo:RO_0008001
+        obo:RO_0002400
+    ) obo:RO_0008002 )
+    SubObjectPropertyOf(     ObjectPropertyChain(
+        obo:RO_0002215
+        obo:RO_0008003
+        obo:RO_0002400
+    ) obo:RO_0008004 )
+)

@@ -1,0 +1,2 @@
+id	add_name	group_name	group_chebi_id	add_go_id	add_go_name	remove_go_id	remove_go_name
+8001	myristoylates	myristoyl	CHEBI:25456	GO:0019107	myristoyltransferase activity
