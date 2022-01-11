@@ -11,7 +11,7 @@ from funowl import (
     ObjectPropertyChain,
     ObjectPropertyExpression,
 )
-from rdflib import DC, Namespace, RDFS
+from rdflib import DC, RDFS, Namespace
 
 HERE = Path(__file__).parent.resolve()
 TSV_PATH = HERE / "relations.tsv"
@@ -27,7 +27,6 @@ capable_of = obo["RO_0002215"]
 has_direct_input = obo["RO_0002400"]
 alternative_term = obo["IAO_0000118"]
 opposite_of = obo["RO_0002604"]
-contributor = orcid["0000-0003-4423-4370"]
 
 DESCRIPTION_FORMAT = (
     "An interaction relation between x and y in which x catalyzes"
@@ -41,7 +40,7 @@ REMOVE_DESCRIPTION_FORMAT = (
 
 def main():
     df = pd.read_csv(TSV_PATH, sep="\t")
-    for k in "add_go_id", "remove_go_id", "chebi_id":
+    for k in "add_go_id", "remove_go_id", "group_chebi_id":
         df[k] = df[k].map(lambda s: s.replace(":", "_"), na_action="ignore")
 
     ontology = funowl.Ontology()
@@ -49,13 +48,12 @@ def main():
         start_ro_id,
         add_name,
         group_name,
-        chebi_id,
+        group_chebi_id,
         add_go_id,
         add_go_name,
         remove_go_id,
         remove_go_name,
         orcid_id,
-        author,
     ) in df.values:
         add_helper = obo[f"RO_{start_ro_id + 0:07}"]
         add_relation = obo[f"RO_{start_ro_id + 1:07}"]
@@ -63,6 +61,7 @@ def main():
         remove_go = obo[remove_go_id] if pd.notna(remove_go_id) else None
         remove_helper = obo[f"RO_{start_ro_id + 2:07}"]
         remove_relation = obo[f"RO_{start_ro_id + 3:07}"]
+        contributor = orcid[orcid_id]
 
         ontology.declarations(
             ObjectProperty(add_helper),
