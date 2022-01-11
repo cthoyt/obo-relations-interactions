@@ -31,11 +31,11 @@ opposite_of = obo["RO_0002604"]
 
 DESCRIPTION_FORMAT = (
     "An interaction relation between x and y in which x catalyzes"
-    " a reaction in which a {} group is added to y."
+    " a reaction in which a {} is added to y."
 )
 REMOVE_DESCRIPTION_FORMAT = (
     "An interaction relation between x and y in which x catalyzes"
-    " a reaction in which a {} group is removed from y."
+    " a reaction in which a {} is removed from y."
 )
 
 
@@ -63,8 +63,8 @@ def main():
     for (
         start_ro_id,
         add_name,
-        group_name,
         group_chebi_id,
+        group_chebi_name,
         add_go_id,
         add_go_name,
         remove_go_id,
@@ -106,12 +106,12 @@ def main():
                 AnnotationAssertion(
                     alternative_term,
                     add_relation,
-                    DESCRIPTION_FORMAT.format(group_name),
+                    DESCRIPTION_FORMAT.format(group_chebi_name),
                 ),
                 AnnotationAssertion(
                     alternative_term,
                     remove_relation,
-                    REMOVE_DESCRIPTION_FORMAT.format(group_name),
+                    REMOVE_DESCRIPTION_FORMAT.format(group_chebi_name),
                 ),
                 # Everything is connected to everything, Brian
                 AnnotationAssertion(opposite_of, add_relation, remove_relation),
@@ -124,7 +124,7 @@ def main():
             )
             ontology.annotations.extend(
                 [
-                    AnnotationAssertion(RDFS.label, group, group_name),
+                    AnnotationAssertion(RDFS.label, group, group_chebi_name),
                     AnnotationAssertion(RDFS.seeAlso, add_relation, group),
                     AnnotationAssertion(RDFS.seeAlso, add_helper, group),
                     AnnotationAssertion(RDFS.seeAlso, remove_relation, group),

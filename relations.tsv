@@ -1,6 +1,6 @@
-id	add_name	group_name	group_chebi_id	add_go_id	add_go_name	remove_go_id	remove_go_name	orcid
-8001	myristoylates	myristoyl	CHEBI:25456	GO:0019107	myristoyltransferase activity			0000-0003-4423-4370
-8005	palmitoylates	palmitoyl	CHEBI:45021	GO:0016409	palmitoyltransferase activity			0000-0003-4423-4370
-8009	methylates	methyl	CHEBI:32875	GO:0008168	methyltransferase activity			0000-0003-4423-4370
-8013	ribosylates	ribosyl	CHEBI:26565	GO:1990404	protein ADP-ribosylase activity			0000-0003-4423-4370
-8017	geranylgeranylates	geranylgeranyl	CHEBI:24231					0000-0003-4423-4370
+id	add_name	group_chebi_id	group_chebi_name	add_go_id	add_go_name	remove_go_id	remove_go_name	orcid
+8001	myristoylates	CHEBI:25456	tetradecanoyl group	GO:0019107	myristoyltransferase activity			0000-0003-4423-4370
+8005	palmitoylates	CHEBI:45021	palmitoyl group	GO:0016409	palmitoyltransferase activity			0000-0003-4423-4370
+8009	methylates	CHEBI:32875	methyl group	GO:0008168	methyltransferase activity			0000-0003-4423-4370
+8013	ribosylates	CHEBI:26565	ribosyl group	GO:1990404	protein ADP-ribosylase activity			0000-0003-4423-4370
+8017	geranylgeranylates	geranylgeranyl group	CHEBI:24231					0000-0003-4423-4370
