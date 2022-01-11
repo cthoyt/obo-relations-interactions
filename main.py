@@ -6,6 +6,7 @@ import funowl
 import pandas as pd
 from funowl import (
     AnnotationAssertion,
+    Class,
     ObjectHasSelf,
     ObjectProperty,
     ObjectPropertyChain,
@@ -40,10 +41,25 @@ REMOVE_DESCRIPTION_FORMAT = (
 
 def main():
     df = pd.read_csv(TSV_PATH, sep="\t")
+    df = df[df["add_go_id"].notna()]
     for k in "add_go_id", "remove_go_id", "group_chebi_id":
         df[k] = df[k].map(lambda s: s.replace(":", "_"), na_action="ignore")
 
     ontology = funowl.Ontology()
+    ontology.annotations.extend(
+        [
+            AnnotationAssertion(
+                RDFS.label, molecular_helper_property, "molecular helper property"
+            ),
+            AnnotationAssertion(
+                RDFS.label, molecularly_interacts_with, "molecularly interacts with"
+            ),
+            AnnotationAssertion(RDFS.label, capable_of, "capable of"),
+            AnnotationAssertion(RDFS.label, has_direct_input, "has direct input"),
+            AnnotationAssertion(RDFS.label, alternative_term, "alternative term"),
+            AnnotationAssertion(RDFS.label, opposite_of, "opposite of"),
+        ]
+    )
     for (
         start_ro_id,
         add_name,
@@ -57,10 +73,11 @@ def main():
     ) in df.values:
         add_helper = obo[f"RO_{start_ro_id + 0:07}"]
         add_relation = obo[f"RO_{start_ro_id + 1:07}"]
-        add_go = obo[add_go_id]
+        add_go = obo[add_go_id] if pd.notna(add_go_id) else None
         remove_go = obo[remove_go_id] if pd.notna(remove_go_id) else None
         remove_helper = obo[f"RO_{start_ro_id + 2:07}"]
         remove_relation = obo[f"RO_{start_ro_id + 3:07}"]
+        group = obo[group_chebi_id] if pd.notna(group_chebi_id) else None
         contributor = orcid[orcid_id]
 
         ontology.declarations(
@@ -80,13 +97,6 @@ def main():
                 AnnotationAssertion(RDFS.label, add_relation, add_name),
                 AnnotationAssertion(RDFS.label, add_helper, f"is {add_go_name}"),
                 AnnotationAssertion(RDFS.label, remove_relation, f"de{add_name}"),
-                AnnotationAssertion(
-                    RDFS.label,
-                    remove_helper,
-                    f"is de{add_go_name}"
-                    if pd.isna(remove_go_name)
-                    else f"is {remove_go_name}",
-                ),
                 # Contributors
                 AnnotationAssertion(DC.contributor, add_helper, contributor),
                 AnnotationAssertion(DC.contributor, add_relation, contributor),
@@ -108,12 +118,47 @@ def main():
                 AnnotationAssertion(opposite_of, remove_relation, add_relation),
             ]
         )
+        if group is not None:
+            ontology.declarations(
+                Class(group),
+            )
+            ontology.annotations.extend(
+                [
+                    AnnotationAssertion(RDFS.label, group, group_name),
+                    AnnotationAssertion(RDFS.seeAlso, add_relation, group),
+                    AnnotationAssertion(RDFS.seeAlso, add_helper, group),
+                    AnnotationAssertion(RDFS.seeAlso, remove_relation, group),
+                    AnnotationAssertion(RDFS.seeAlso, remove_helper, group),
+                ]
+            )
 
-        ontology.subClassOf(add_go, ObjectHasSelf(ObjectPropertyExpression(add_helper)))
+        if pd.notna(remove_go_name):
+            ontology.annotations.append(
+                AnnotationAssertion(RDFS.label, remove_helper, f"is {remove_go_name}")
+            )
+        elif pd.notna(add_go_name):
+            ontology.annotations.append(
+                AnnotationAssertion(
+                    RDFS.label,
+                    remove_helper,
+                    f"is de{add_go_name}",
+                )
+            )
+
+        if add_go is not None:
+            ontology.annotations.append(
+                AnnotationAssertion(RDFS.label, add_go, add_go_name),
+            )
+            ontology.subClassOf(
+                add_go, ObjectHasSelf(ObjectPropertyExpression(add_helper))
+            )
         # Most relations don't already have a GO relation for the reverse process
         if remove_go is not None:
             ontology.subClassOf(
                 remove_go, ObjectHasSelf(ObjectPropertyExpression(add_helper))
+            )
+            ontology.annotations.append(
+                AnnotationAssertion(RDFS.label, remove_go, remove_go_name),
             )
 
         ontology.subObjectPropertyOf(
