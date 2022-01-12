@@ -19,16 +19,17 @@ Fields in the input file:
 3. `remove_helper_id` the RO identifier for the helper identifier for the remove
    relationship
 4. `remove_id` the RO identifier for the remove relationship
-5. `add_name` the name of the addition relationship, e.g., *myristoylates*
-6. `group_name` the name of the group that's added, e.g., *myristoyl*
+5. `add_name` the name of the addition relationship, e.g., *palmitoylates*
+6. `group_name` the name of the group that's added, e.g., *palmitoyl group*
 7. `group_chebi_id` the CHEBI identifier (as a CURIE) for the group that's
    added, e.g., `CHEBI:25456`
 8. `add_go_id` the GO identifier (as a CURIE) for the corresponding molecular
    function related to adding the group
-9. `add_go_name` the GO name for above
+9. `add_go_name` the GO name for above, e.g., *palmitoyltransferase activity*
 10. `remove_go_id` the GO identifier (as a CURIE) for the corresponding
     molecular function related to removing the group
 11. `remove_go_name` th GO name for above
+12. `orcid` the ORCID identifier of the contributor
 
 ## How to Build
 
@@ -39,4 +40,6 @@ $ pip install tox
 $ tox
 ```
 
+## License
 
+Code in this repository is licensed under MIT and data under CC0.
