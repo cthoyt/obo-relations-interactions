@@ -20,7 +20,6 @@ OWL_PATH = HERE / "relations.owl"
 
 obo = Namespace("http://purl.obolibrary.org/obo/")
 orcid = Namespace("https://orcid.org/")
-iao = Namespace("https://orcid.org/")
 
 molecular_helper_property = obo["RO_0002564"]
 molecularly_interacts_with = obo["RO_0002436"]
