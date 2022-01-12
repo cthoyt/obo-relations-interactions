@@ -41,7 +41,15 @@ REMOVE_DESCRIPTION_FORMAT = (
 def main():
     df = pd.read_csv(TSV_PATH, sep="\t")
     df = df[df["add_go_id"].notna()]
-    for k in "add_go_id", "remove_go_id", "group_chebi_id":
+    for k in [
+        "add_helper_id",
+        "add_id",
+        "remove_helper_id",
+        "remove_id",
+        "add_go_id",
+        "remove_go_id",
+        "group_chebi_id",
+    ]:
         df[k] = df[k].map(lambda s: s.replace(":", "_"), na_action="ignore")
 
     ontology = funowl.Ontology()
@@ -63,7 +71,10 @@ def main():
         ]
     )
     for (
-        start_ro_id,
+        add_helper_id,
+        add_id,
+        remove_helper_id,
+        remove_id,
         add_name,
         group_chebi_id,
         group_chebi_name,
@@ -73,12 +84,12 @@ def main():
         remove_go_name,
         orcid_id,
     ) in df.values:
-        add_helper = obo[f"RO_{start_ro_id + 0:07}"]
-        add_relation = obo[f"RO_{start_ro_id + 1:07}"]
+        add_helper = obo[add_helper_id]
+        add_relation = obo[add_id]
         add_go = obo[add_go_id] if pd.notna(add_go_id) else None
         remove_go = obo[remove_go_id] if pd.notna(remove_go_id) else None
-        remove_helper = obo[f"RO_{start_ro_id + 2:07}"]
-        remove_relation = obo[f"RO_{start_ro_id + 3:07}"]
+        remove_helper = obo[remove_helper_id]
+        remove_relation = obo[remove_id]
         group = obo[group_chebi_id] if pd.notna(group_chebi_id) else None
         contributor = orcid[orcid_id]
 
@@ -92,6 +103,12 @@ def main():
         ontology.subObjectPropertyOf(add_relation, molecularly_interacts_with)
         ontology.subObjectPropertyOf(remove_helper, molecular_helper_property)
         ontology.subObjectPropertyOf(remove_relation, molecularly_interacts_with)
+
+        # for parent_ns, parent_id in bio_ontology.get_parents("GO", add_go_id):
+        #     parent = obo[f"{parent_ns}_{parent_id}"]
+        #     ontology.declarations(Class(parent))
+        #     ontology.annotations.append(
+        #         AnnotationAssertion(RDFS.label, parent, bio_ontology.get_name(parent_ns, parent_id)))
 
         ontology.annotations.extend(
             [
